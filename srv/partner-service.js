@@ -4,7 +4,7 @@ const businessPartnerService = require("../services/business-partner-service/ser
 module.exports = (srv) => {
   const { BusinessPartners } = srv.entities;
 
-  srv.on("READ", BusinessPartners, async () => {
+  srv.on("READ", BusinessPartners, async (req, next) => {
     const { businessPartnerApi } =
       businessPartnerService.businessPartnerService();
 
