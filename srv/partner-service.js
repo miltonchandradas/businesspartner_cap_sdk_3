@@ -17,7 +17,10 @@ module.exports = (srv) => {
         businessPartnerApi.schema.LAST_NAME,
         businessPartnerApi.schema.BUSINESS_PARTNER_CATEGORY
       )
-      .filter(businessPartnerApi.schema.BUSINESS_PARTNER_CATEGORY.equals("1"))
+      .filter(
+        businessPartnerApi.schema.FIRST_NAME.notEquals(""),
+        businessPartnerApi.schema.LAST_NAME.notEquals("")
+      )
       .top(10)
       .addCustomHeaders({ apikey: process.env.apikey })
       .execute({
