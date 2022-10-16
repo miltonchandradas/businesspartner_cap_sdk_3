@@ -9,3 +9,12 @@ entity BusinessPartners       as projection on external.A_BusinessPartner {
         FirstName               as firstName,
         BusinessPartnerCategory as businessPartnerCategory
 }
+
+entity BusinessPartnerAddress as projection on external.A_BusinessPartnerAddress {
+    key BusinessPartner as businessPartner,
+    key AddressID       as addressId,
+        PostalCode      as postalCode,
+        CityName        as cityName,
+        StreetName      as streetName,
+        HouseNumber     as houseNumber
+}

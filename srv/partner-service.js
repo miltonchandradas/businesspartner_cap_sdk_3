@@ -2,7 +2,7 @@ const cds = require("@sap/cds");
 const businessPartnerService = require("../services/business-partner-service/service");
 
 module.exports = (srv) => {
-  const { BusinessPartners } = srv.entities;
+  const { BusinessPartners, BusinessPartnerAddress } = srv.entities;
 
   srv.on("READ", BusinessPartners, async (req, next) => {
     const { businessPartnerApi } =
@@ -20,6 +20,28 @@ module.exports = (srv) => {
       .filter(
         businessPartnerApi.schema.FIRST_NAME.notEquals(""),
         businessPartnerApi.schema.LAST_NAME.notEquals("")
+      )
+      .top(10)
+      .addCustomHeaders({ apikey: process.env.apikey })
+      .execute({
+        url: process.env.URL,
+      });
+  });
+
+  srv.on("READ", BusinessPartnerAddress, async () => {
+    const { businessPartnerAddressApi } =
+      businessPartnerService.businessPartnerService();
+
+    return await businessPartnerAddressApi
+      .requestBuilder()
+      .getAll()
+      .select(
+        businessPartnerAddressApi.schema.BUSINESS_PARTNER,
+        businessPartnerAddressApi.schema.ADDRESS_ID,
+        businessPartnerAddressApi.schema.POSTAL_CODE,
+        businessPartnerAddressApi.schema.CITY_NAME,
+        businessPartnerAddressApi.schema.STREET_NAME,
+        businessPartnerAddressApi.schema.HOUSE_NUMBER
       )
       .top(10)
       .addCustomHeaders({ apikey: process.env.apikey })
